@@ -1,17 +1,28 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
-import CoinsPage from "./pages/CoinPage";
+import CoinPage from "./pages/CoinPage";
 import PortfolioPage from "./pages/PortfolioPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+
+// Import global styles
+import "./index.css";
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/coins" element={<CoinsPage />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-      </Routes>
-    </Router>
+    <div className="app-container">
+      <Router>
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/coins" element={<CoinPage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </div>
   );
 }
