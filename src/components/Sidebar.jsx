@@ -27,14 +27,15 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-[var(--color-card-background)] border-r border-[var(--color-card-border)] flex flex-col h-screen sticky top-0">
+    <div className="relative min-w-65 wrapper">
+    <aside className="top-0 fixed flex flex-col bg-[var(--color-card-background)] border-[var(--color-card-border)] border-r w-64 h-screen">
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <h1 className="font-bold text-[var(--color-text-primary)] text-2xl">
           <span className="text-[var(--color-accent)]">Crypto</span>Explorer
         </h1>
       </div>
       
-      <nav className="flex-1 px-3 space-y-1">
+      <nav className="flex-1 space-y-1 px-3">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
@@ -51,17 +52,18 @@ export default function Sidebar() {
         ))}
       </nav>
       
-      <div className="p-4 border-t border-[var(--color-card-border)]">
-        <div className="flex items-center p-3 rounded-lg bg-[var(--color-card-border)]">
-          <div className="w-10 h-10 rounded-full bg-[var(--color-accent)] flex items-center justify-center text-white font-medium mr-3">
+      <div className="p-4 border-[var(--color-card-border)] border-t">
+        <div className="flex items-center p-3 bg-[var(--color-card-border)] rounded-lg">
+          <div className="flex justify-center items-center bg-[var(--color-accent)] mr-3 rounded-full w-10 h-10 font-medium text-white">
             U
           </div>
           <div>
-            <p className="text-sm font-medium text-[var(--color-text-primary)]">User Name</p>
-            <p className="text-xs text-[var(--color-text-placeholder)]">user@example.com</p>
+            <p className="font-medium text-[var(--color-text-primary)] text-sm">User Name</p>
+            <p className="text-[var(--color-text-placeholder)] text-xs">user@example.com</p>
           </div>
         </div>
       </div>
     </aside>
+    </div>
   );
 }

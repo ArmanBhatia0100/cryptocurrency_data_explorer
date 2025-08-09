@@ -117,7 +117,7 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
         </div>
         
         {/* Chart */}
-        <div className="-mx-2 -mb-2 h-40">
+        <div className="-mx-2 -mb-2 h-40 object-contain overflow-hidden">
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <div className="flex flex-col items-center animate-pulse">
@@ -129,8 +129,9 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
             <Sparklines 
               data={chartData} 
               width={400} 
-              height={120}
+              height={55}
               margin={5}
+            
             >
               <defs>
                 <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -155,7 +156,7 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
                   strokeWidth: 2
                 }} 
               />
-              <SparklinesReferenceLine type="avg" />
+              {/* <SparklinesReferenceLine type="avg" /> */}
             </Sparklines>
           )}
         </div>
