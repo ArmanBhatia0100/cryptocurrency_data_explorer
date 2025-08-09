@@ -90,21 +90,21 @@ export default function CurrenciesList() {
   };
 
   return (
-    <div className="card p-6">
+    <div className="p-6 card">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Your Portfolio</h3>
-        <button className="text-sm font-medium text-[var(--color-accent)] hover:underline">
+        <h3 className="font-semibold text-[var(--color-text-primary)] text-lg">Your Portfolio</h3>
+        <button className="font-medium text-[var(--color-accent)] text-sm hover:underline">
           View All
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="gap-8 grid grid-cols-1 xl:grid-cols-2">
         {/* Pie chart */}
-        <div className="relative h-64">
-          <div className="absolute inset-0 flex items-center justify-center">
+        <div className="hidden xl:block relative h-64">
+          <div className="absolute inset-0 flex justify-center items-center">
             <div className="text-center">
-              <p className="text-sm text-[var(--color-text-secondary)]">Total Value</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
+              <p className="text-[var(--color-text-secondary)] text-sm">Total Value</p>
+              <p className="font-bold text-[var(--color-text-primary)] text-2xl">
                 {formatCurrency(totalValue)}
               </p>
             </div>
@@ -124,17 +124,17 @@ export default function CurrenciesList() {
                   : 'hover:bg-[var(--color-card-hover)]'
               }`}
             >
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex justify-between items-center mb-1">
                 <div className="flex items-center">
                   <div 
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white mr-3"
+                    className="flex justify-center items-center mr-3 rounded-full w-8 h-8 text-white"
                     style={{ backgroundColor: currency.color }}
                   >
                     {currency.symbol}
                   </div>
                   <div>
                     <h4 className="font-medium text-[var(--color-text-primary)]">{currency.name}</h4>
-                    <p className="text-xs text-[var(--color-text-placeholder)]">{currency.amount} {currency.symbol}</p>
+                    <p className="text-[var(--color-text-placeholder)] text-xs">{currency.amount} {currency.symbol}</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -152,9 +152,9 @@ export default function CurrenciesList() {
               </div>
               
               {/* Progress bar showing allocation percentage */}
-              <div className="w-full h-1.5 bg-[var(--color-card-border)] rounded-full overflow-hidden mt-2">
+              <div className="mt-2 bg-[var(--color-card-border)] rounded-full w-full h-1.5 overflow-hidden">
                 <div 
-                  className="h-full rounded-full"
+                  className="rounded-full h-full"
                   style={{
                     width: `${(currency.value * currency.amount / totalValue) * 100}%`,
                     backgroundColor: currency.color,

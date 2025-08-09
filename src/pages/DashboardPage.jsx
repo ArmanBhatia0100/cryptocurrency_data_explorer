@@ -13,7 +13,7 @@ export default function DashboardPage() {
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Header />
-        <main className="gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-6">
+        <main className="gap-4 grid grid-cols-1 lg:grid-cols-2 p-6">
           <div className="space-y-4 md:col-span-2 lg:col-span-3">
             <div className="gap-4 grid grid-cols-2">
               <BalanceCard />
@@ -22,7 +22,7 @@ export default function DashboardPage() {
             <TopCoins />
             <FavCoinChart />
           </div>
-          <ExchangeWidget />
+         
         </main>
       </div>
     </div>
