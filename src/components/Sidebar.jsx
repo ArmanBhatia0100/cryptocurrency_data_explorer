@@ -30,17 +30,6 @@ export default function Sidebar() {
   const [isHovered, setIsHovered] = useState(null);
 
   const itemVariants = {
-    hidden: { x: -20, opacity: 0 },
-    visible: (i) => ({
-      x: 0,
-      opacity: 1,
-      transition: {
-        delay: i * 0.1,
-        type: 'spring',
-        stiffness: 100,
-        damping: 10
-      }
-    }),
     hover: {
       scale: 1.03,
       x: 5,
@@ -51,17 +40,8 @@ export default function Sidebar() {
   return (
     <div className="relative min-w-65 wrapper">
       <aside className="top-0 fixed flex flex-col bg-[var(--color-card-background)] border-[var(--color-card-border)] border-r w-64 h-screen">
-      <motion.div 
-        className="p-6"
-        whileHover={{ scale: 1.02 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-      >
-        <motion.h1 
-          className="font-bold text-[var(--color-text-primary)] text-2xl"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+      <div className="p-6">
+        <h1 className="font-bold text-[var(--color-text-primary)] text-2xl">
           <motion.span 
             className="text-[var(--color-accent)]"
             animate={{ 
@@ -80,16 +60,13 @@ export default function Sidebar() {
             Crypto
           </motion.span>
           Explorer
-        </motion.h1>
-      </motion.div>
+        </h1>
+      </div>
       
       <nav className="flex-1 space-y-1 px-3">
         {navItems.map((item, index) => (
           <motion.div
             key={item.path}
-            custom={index}
-            initial="hidden"
-            animate="visible"
             variants={itemVariants}
             whileHover="hover"
             onHoverStart={() => setIsHovered(index)}
