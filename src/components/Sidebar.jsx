@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -26,43 +27,152 @@ export default function Sidebar() {
     ), label: "Portfolio" },
   ];
 
+  const [isHovered, setIsHovered] = useState(null);
+
+  const itemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: (i) => ({
+      x: 0,
+      opacity: 1,
+      transition: {
+        delay: i * 0.1,
+        type: 'spring',
+        stiffness: 100,
+        damping: 10
+      }
+    }),
+    hover: {
+      scale: 1.03,
+      x: 5,
+      transition: { type: 'spring', stiffness: 400, damping: 10 }
+    }
+  };
+
   return (
     <div className="relative min-w-65 wrapper">
-    <aside className="top-0 fixed flex flex-col bg-[var(--color-card-background)] border-[var(--color-card-border)] border-r w-64 h-screen">
-      <div className="p-6">
-        <h1 className="font-bold text-[var(--color-text-primary)] text-2xl">
-          <span className="text-[var(--color-accent)]">Crypto</span>Explorer
-        </h1>
-      </div>
+      <aside className="top-0 fixed flex flex-col bg-[var(--color-card-background)] border-[var(--color-card-border)] border-r w-64 h-screen">
+      <motion.div 
+        className="p-6"
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+      >
+        <motion.h1 
+          className="font-bold text-[var(--color-text-primary)] text-2xl"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <motion.span 
+            className="text-[var(--color-accent)]"
+            animate={{ 
+              textShadow: [
+                '0 0 0px rgba(99, 102, 241, 0.5)',
+                '0 0 10px rgba(99, 102, 241, 0.7)',
+                '0 0 0px rgba(99, 102, 241, 0.5)'
+              ]
+            }}
+            transition={{ 
+              duration: 3, 
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+          >
+            Crypto
+          </motion.span>
+          Explorer
+        </motion.h1>
+      </motion.div>
       
       <nav className="flex-1 space-y-1 px-3">
-        {navItems.map((item) => (
-          <NavLink
+        {navItems.map((item, index) => (
+          <motion.div
             key={item.path}
-            to={item.path}
-            className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-              isActive(item.path)
-                ? 'bg-[var(--color-accent)] text-white'
-                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-card-border)]'
-            }`}
+            custom={index}
+            initial="hidden"
+            animate="visible"
+            variants={itemVariants}
+            whileHover="hover"
+            onHoverStart={() => setIsHovered(index)}
+            onHoverEnd={() => setIsHovered(null)}
           >
-            <span className="mr-3">{item.icon}</span>
-            <span className="font-medium">{item.label}</span>
-          </NavLink>
+            <NavLink
+              to={item.path}
+              className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                isActive(item.path)
+                  ? 'bg-[var(--color-accent)] text-white'
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-card-border)]'
+              }`}
+            >
+              <motion.span 
+                className="mr-3"
+                animate={isHovered === index ? { scale: 1.2 } : { scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 10 }}
+              >
+                {item.icon}
+              </motion.span>
+              <motion.span 
+                className="font-medium"
+                animate={isHovered === index ? { x: 5 } : { x: 0 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 10 }}
+              >
+                {item.label}
+              </motion.span>
+              {isActive(item.path) && (
+                <motion.div 
+                  className="ml-auto h-2 w-2 bg-white rounded-full"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ 
+                    type: 'spring',
+                    stiffness: 500,
+                    damping: 30
+                  }}
+                />
+              )}
+            </NavLink>
+          </motion.div>
         ))}
       </nav>
       
-      <div className="p-4 border-[var(--color-card-border)] border-t">
-        <div className="flex items-center p-3 bg-[var(--color-card-border)] rounded-lg">
-          <div className="flex justify-center items-center bg-[var(--color-accent)] mr-3 rounded-full w-10 h-10 font-medium text-white">
-            U
-          </div>
+      <motion.div 
+        className="p-4 border-[var(--color-card-border)] border-t"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <motion.div 
+          className="flex items-center p-3 bg-[var(--color-card-border)] rounded-lg"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        >
+          <motion.div 
+            className="flex justify-center items-center bg-[var(--color-accent)] mr-3 rounded-full w-10 h-10 font-medium text-white cursor-pointer"
+            whileHover={{ rotate: 360, scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+          >
+            <motion.span
+              animate={{ 
+                rotate: [0, 10, -10, 0],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity,
+                repeatType: 'reverse',
+                ease: 'easeInOut'
+              }}
+            >
+              U
+            </motion.span>
+          </motion.div>
           <div>
             <p className="font-medium text-[var(--color-text-primary)] text-sm">User Name</p>
             <p className="text-[var(--color-text-placeholder)] text-xs">user@example.com</p>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </aside>
     </div>
   );

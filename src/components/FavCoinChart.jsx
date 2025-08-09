@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 import { Sparklines, SparklinesLine, SparklinesSpots, SparklinesReferenceLine } from "react-sparklines";
 import { ArrowTrendingUpIcon, ArrowTrendingDownIcon, ArrowsRightLeftIcon, ClockIcon, ChartBarIcon } from "@heroicons/react/24/outline";
 
@@ -66,9 +68,42 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
     }).format(price);
   };
 
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const priceChangeVariant = {
+    initial: { scale: 1 },
+    animate: { 
+      scale: [1, 1.1, 1],
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div className="p-6 card">
-      <div className="flex flex-col space-y-4">
+    <motion.div 
+      className="p-6 card"
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+    >
+      <motion.div 
+        className="flex flex-col space-y-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          visible: {
+            transition: {
+              staggerChildren: 0.1
+            }
+          }
+        }}
+      >
         {/* Header with coin info and price */}
         <div className="flex justify-between items-start">
           <div>
@@ -82,11 +117,26 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
               </div>
             </div>
             
-            <div className="mt-2">
-              <p className="font-bold text-[var(--color-text-primary)] text-2xl">
+            <motion.div 
+              className="mt-2"
+              variants={fadeIn}
+            >
+              <motion.p 
+                className="font-bold text-[var(--color-text-primary)] text-2xl"
+                key={currentPrice}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 {formatPrice(currentPrice)}
-              </p>
-              <div className={`flex items-center ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+              </motion.p>
+              <motion.div 
+                className={`flex items-center ${isPositive ? 'text-green-500' : 'text-red-500'}`}
+                variants={priceChangeVariant}
+                initial="initial"
+                animate="animate"
+                key={`${priceChangePercent}-${priceChange}`}
+              >
                 {isPositive ? (
                   <ArrowTrendingUpIcon className="mr-1 w-4 h-4" />
                 ) : (
@@ -95,8 +145,8 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
                 <span className="font-medium text-sm">
                   {isPositive ? '+' : ''}{priceChangePercent}% ({isPositive ? '+' : ''}{formatPrice(priceChange)})
                 </span>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
           
           <div className="flex space-x-1 bg-[var(--color-card-hover)] p-1 rounded-lg">
@@ -117,16 +167,42 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
         </div>
         
         {/* Chart */}
-        <div className="-mx-2 -mb-2 h-40 object-contain overflow-hidden">
-          {isLoading ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="flex flex-col items-center animate-pulse">
-                <ChartBarIcon className="mb-2 w-8 h-8 text-[var(--color-text-secondary)]" />
-                <p className="text-[var(--color-text-secondary)] text-sm">Loading chart...</p>
-              </div>
-            </div>
-          ) : (
-            <Sparklines 
+        <motion.div 
+          className="-mx-2 -mb-2 h-40 object-contain overflow-hidden"
+          variants={fadeIn}
+        >
+          <AnimatePresence mode="wait">
+            {isLoading ? (
+              <motion.div 
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex justify-center items-center h-full"
+              >
+                <motion.div 
+                  className="flex flex-col items-center"
+                  animate={{ 
+                    y: [0, -5, 0],
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 1.5,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <ChartBarIcon className="mb-2 w-8 h-8 text-[var(--color-text-secondary)]" />
+                  <p className="text-[var(--color-text-secondary)] text-sm">Loading chart...</p>
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="chart"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+              <Sparklines 
               data={chartData} 
               width={400} 
               height={55}
@@ -157,12 +233,18 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
                 }} 
               />
               {/* <SparklinesReferenceLine type="avg" /> */}
-            </Sparklines>
-          )}
-        </div>
+              </Sparklines>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <motion.div />
+     
         
         {/* Additional info */}
-        <div className="gap-4 grid grid-cols-3 mt-2 text-center">
+        <motion.div 
+          className="gap-4 grid grid-cols-3 mt-2 text-center"
+          variants={fadeIn}
+        >
           <div className="bg-[var(--color-card-hover)] p-2 rounded-lg">
             <p className="text-[var(--color-text-secondary)] text-xs">24h High</p>
             <p className="font-medium text-[var(--color-text-primary)]">
@@ -181,8 +263,10 @@ export default function FavCoinChart({ coin = 'Bitcoin', symbol = 'BTC' }) {
               ${(currentPrice * 10000).toLocaleString()}
             </p>
           </div>
-        </div>
-      </div>
-    </div>
+        {/* </div> */}
+      </motion.div>
+    </motion.div>
+    </motion.div>
+    </motion.div>
   );
 }
